@@ -8,9 +8,16 @@ set splitright
 set incsearch
 set nocursorline
 set number
+set rnu " Relative numbering
 
 set vb t_vb=
 set clipboard=unnamed
+
+" Navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 "Colors
 colorscheme peachpuff
@@ -22,8 +29,8 @@ let mapleader=' '
 nnoremap Y y$
 
 "Formatting
-set fo-=o " Do not automatically insert the current comment leader after hitting 'o' or 'O' in Normal mode.
-set fo-=r " Do not automatically insert a comment leader after an enter
+set formatoptions-=o " Do not automatically insert the current comment leader after hitting 'o' or 'O' in Normal mode.
+set formatoptions-=r " Do not automatically insert a comment leader after an enter
 
 "Plugins
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -41,13 +48,13 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-git'
 Plugin 'ervandew/supertab'
 Plugin 'rking/ag.vim'
+Plugin 'tomtom/tcomment_vim'
 "Plugin 'Raimondi/delimitMate'
 "Plugin 'heartsentwined/vim-emblem'
 "Plugin 'kchmck/vim-coffee-script'
 "Plugin 'digitaltoad/vim-jade'
 "Plugin 'slim-template/vim-slim'
 "Plugin 'iandoe/vim-osx-colorpicker'
-"Plugin 'tomtom/tcomment_vim'
 "Plugin 'mustache/vim-mustache-handlebars'
 call vundle#end()
 filetype plugin indent on

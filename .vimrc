@@ -1,39 +1,7 @@
+"Plugins
 set nocompatible              " be iMproved, required
 filetype off                  " required
-scriptencoding utf-8
-set noswapfile
-set matchpairs+=<:>
-set splitbelow
-set splitright
-set incsearch
-set nocursorline
-set number
-set rnu " Relative numbering
-
-set vb t_vb=
-set clipboard=unnamed
-
-" Navigation
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-"Colors
-colorscheme peachpuff
-set background=light
-
-"Mapping
-let mapleader=' '
-" Yank from the cursor to the end of the line, to be consistent with C and D.
-nnoremap Y y$
-
-"Formatting
-set formatoptions-=o " Do not automatically insert the current comment leader after hitting 'o' or 'O' in Normal mode.
-set formatoptions-=r " Do not automatically insert a comment leader after an enter
-
-"Plugins
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.vim/bundle/Vundle.vim " Manage plugins with Vundle
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'pangloss/vim-javascript'
@@ -49,6 +17,11 @@ Plugin 'tpope/vim-git'
 Plugin 'ervandew/supertab'
 Plugin 'rking/ag.vim'
 Plugin 'tomtom/tcomment_vim'
+Plugin 'ctrlpvim/ctrlp.vim' " tag searching
+Plugin 'majutsushi/tagbar' " tag searching
+Plugin 'vim-syntastic/syntastic'
+Plugin 'elmcast/elm-vim'
+Plugin 'lambdatoast/elm.vim'
 "Plugin 'Raimondi/delimitMate'
 "Plugin 'heartsentwined/vim-emblem'
 "Plugin 'kchmck/vim-coffee-script'
@@ -60,7 +33,46 @@ call vundle#end()
 filetype plugin indent on
 syntax enable
 
-execute pathogen#infect()
+"General
+scriptencoding utf-8
+set enc=utf-8
+set noswapfile
+set splitbelow
+set splitright
+set incsearch
+set nocursorline
+set number
+set rnu " Relative numbering
+set vb t_vb=
+set clipboard=unnamed
+setlocal spell spelllang=en_us
+set directory=/tmp/
+let mapleader=' '
+let g:syntastic_enable_signs=1
+
+"Colors
+colorscheme peachpuff
+set background=light
+
+" Navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+"Formatting and Editing
+set formatoptions-=o " Do not automatically insert the current comment leader after hitting 'o' or 'O' in Normal mode.
+set formatoptions-=r " Do not automatically insert a comment leader after an enter
+nmap <S-K> O<Esc>j
+nmap <S-J> o<Esc>k
+" Yank from the cursor to the end of the line, to be consistent with C and D.
+nnoremap Y y$
+" Replace word under cursor globally in file
+:nnoremap <leader>s :%s/\<<C-r><C-w>\>/
+
+"Ctags
+nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <silent> <leader>b :TagbarToggle<cr>
 
 "Statusline
 set laststatus=2 " always show the status bar
@@ -72,7 +84,7 @@ set statusline+=\ [%b][0x%B] " [character value],[same, in hexadecimal]
 set statusline+=\ Col:%v " column number
 set statusline+=\ Buf:#%n " buffer number
 
-:runtime macros/matchit.vim
+:runtime macros/matchit.vim " Extends '%' match function to if/else, </>, etc.
 
 "Tabs
 set tabstop=2
@@ -107,10 +119,22 @@ map ,r :w\|:!ruby %:t<cr>
 map ,t :w\|:!rspec %:p<cr>
 map ,, :w<cr>
 map qq :q!<cr>
-map vrc :vs ~/.vimrc<cr>
-map sc :source ~/.vimrc<cr>
+map vrc :vs ~/.vim/vimrc<cr>
+map sc :source ~/.vim/vimrc<cr>
 
-nmap <S-K> O<Esc>j
-nmap <S-J> o<Esc>k
+"Autocommands
+au BufRead,BufNewFile {Gemfile,Rakefile,Capfile,*.rake,config.ru} setfiletype ruby
+au BufRead,BufNewFile {*.md,*.mkd,*.markdown}               setfiletype markdown
+au BufRead,BufNewFile {COMMIT_EDITMSG}                      setfiletype gitcommit
+au BufRead,BufNewFile {*.json}                              setfiletype javascript
+au BufWritePre        {*.coffee,*.js,*.rb}                  :%s/\s\+$//e
 
-au BufRead,BufNewFile *.embl setfiletype emblem
+"Omnicompletion, Keyword Completion
+let g:SuperTabDefaultCompletionType = "<c-x><c-o>" " Omnicomplete
+
+"Elm
+let g:elm_setup_keybindings = 0
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:elm_syntastic_show_warnings = 1
+let g:elm_format_autosave = 1
